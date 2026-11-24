@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GurSikh Kids - Gurbani Learner, Daily Hukamnama & Games</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Three.js for 3D Game -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Google Fonts: Poppins & Gurmukhi -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Noto+Sans+Gurmukhi:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .gurmukhi { font-family: 'Noto Sans Gurmukhi', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="bg-blue-950/90 border-b border-amber-500/30 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center shadow-lg shadow-amber-500/20 border-2 border-amber-200">
+                    <svg class="w-7 h-7 text-blue-950" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L13.5 7H16.5L14 9L15 13L12 11L9 13L10 9L7.5 7H10.5L12 2Z"/>
+                        <path d="M6 14C6 11 9 9 12 9C15 9 18 11 18 14V22H16V15C16 13 14 11 12 11C10 11 8 13 8 15V22H6V14Z"/>
+                        <path d="M4 16H20V18H4V16Z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 bg-clip-text text-transparent">GURSIKH KIDS</h1>
+                    <p class="text-xs text-amber-200/70 font-medium">Sikh Heritage, Games & Nitnem</p>
+                </div>
+            </div>
+
+            <nav class="flex items-center gap-1 sm:gap-2 overflow-x-auto py-1">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all bg-amber-500 text-blue-950 shadow-md cursor-pointer">Home</button>
+                <button onclick="switchTab('games')" id="nav-games" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all text-amber-200 hover:bg-blue-900/60 cursor-pointer">Arcade & 3D</button>
+                <button onclick="switchTab('gutka')" id="nav-gutka" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all text-amber-200 hover:bg-blue-900/60 cursor-pointer">Sundar Gutka</button>
+                <button onclick="switchTab('learner')" id="nav-learner" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all text-amber-200 hover:bg-blue-900/60 cursor-pointer">Gurbani Learner</button>
+                <button onclick="switchTab('hukam')" id="nav-hukam" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all text-amber-200 hover:bg-blue-900/60 cursor-pointer">Daily Hukam</button>
+                <button onclick="switchTab('media')" id="nav-media" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all text-amber-200 hover:bg-blue-900/60 cursor-pointer">Media Hub</button>
+                <button onclick="switchTab('ai')" id="nav-ai" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all text-amber-200 hover:bg-blue-900/60 cursor-pointer">Seva Buddy</button>
+            </nav>
+
+            <div class="flex items-center gap-2 bg-blue-900/80 px-3 py-1.5 rounded-full border border-amber-500/40">
+                <span class="text-amber-400 text-lg">⭐</span>
+                <span id="star-count" class="font-extrabold text-amber-300">150</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6">
+
+        <!-- TAB 1: HOME -->
+        <section id="tab-home" class="space-y-8">
+            <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-blue-900 via-indigo-900 to-blue-950 p-8 sm:p-12 border-2 border-amber-500/40 shadow-2xl">
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest border border-amber-500/30">Sat Sri Akal! 🙏</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">Welcome to <span class="text-amber-400">GurSikh Kids</span></h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Explore Gurbani through our digital Sundar Gutka, play arcade games with desktop controls, listen to Web Audio chanting, and chat with Seva AI!
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button onclick="switchTab('games')" class="bg-amber-500 hover:bg-amber-400 text-blue-950 font-bold px-6 py-3 rounded-xl shadow-lg cursor-pointer">Play Games 🎮</button>
+                        <button onclick="switchTab('gutka')" class="bg-blue-800 hover:bg-blue-700 text-amber-300 font-bold px-6 py-3 rounded-xl border border-amber-500/40 cursor-pointer">Read Sundar Gutka 📖</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: GAMES -->
+        <section id="tab-games" class="hidden space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-4 bg-slate-900/90 p-4 rounded-2xl border border-slate-800">
+                <div>
+                    <h2 class="text-2xl font-bold text-amber-300">Khalsa Arcade & 3D Games</h2>
+                    <p class="text-slate-400 text-sm">Use ◄ ► Arrow Keys or D-Pad. Spacebar to FIRE!</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="launchGame('blaster')" id="gbtn-blaster" class="gbtn bg-amber-500 text-blue-950 font-bold px-4 py-2 rounded-xl text-sm cursor-pointer">Star Blaster</button>
+                    <button onclick="launchGame('runner3d')" id="gbtn-runner3d" class="gbtn bg-slate-800 text-amber-300 hover:bg-slate-700 font-bold px-4 py-2 rounded-xl text-sm cursor-pointer">3D Khalsa Run</button>
+                    <button onclick="launchGame('wordcatch')" id="gbtn-wordcatch" class="gbtn bg-slate-800 text-amber-300 hover:bg-slate-700 font-bold px-4 py-2 rounded-xl text-sm cursor-pointer">Gurmukhi Catch</button>
+                    <button onclick="launchGame('trivia')" id="gbtn-trivia" class="gbtn bg-slate-800 text-amber-300 hover:bg-slate-700 font-bold px-4 py-2 rounded-xl text-sm cursor-pointer">Trivia Quest</button>
+                    <button onclick="launchGame('memory')" id="gbtn-memory" class="gbtn bg-slate-800 text-amber-300 hover:bg-slate-700 font-bold px-4 py-2 rounded-xl text-sm cursor-pointer">Memory Match</button>
+                    <button onclick="launchGame('scramble')" id="gbtn-scramble" class="gbtn bg-slate-800 text-amber-300 hover:bg-slate-700 font-bold px-4 py-2 rounded-xl text-sm cursor-pointer">Sikhi Word Scramble</button>
+                </div>
+            </div>
+
+            <div class="relative bg-slate-900 border-2 border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col items-center justify-center min-h-[480px]">
+                <!-- Blaster -->
+                <div id="game-blaster" class="game-container w-full h-[480px] relative flex flex-col items-center justify-center bg-gradient-to-b from-blue-950 to-slate-950">
+                    <div class="absolute top-4 left-4 text-amber-300 font-bold">Score: <span id="blaster-score">0</span></div>
+                    <div class="relative w-full max-w-lg h-[360px] bg-slate-900/60 border border-amber-500/30 rounded-xl overflow-hidden flex items-center justify-center">
+                        <canvas id="blasterCanvas" width="400" height="360" class="block"></canvas>
+                        <div id="blaster-overlay" class="absolute inset-0 bg-blue-950/80 flex flex-col items-center justify-center p-6 text-center">
+                            <h3 class="text-2xl font-bold text-amber-300 mb-2">Khanda Star Blaster</h3>
+                            <button onclick="startBlasterGame()" class="bg-amber-500 text-blue-950 font-bold px-6 py-2 rounded-xl cursor-pointer">Start Game</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3D Runner -->
+                <div id="game-runner3d" class="game-container hidden w-full h-[480px] relative flex flex-col items-center justify-center bg-slate-950">
+                    <div class="absolute top-4 left-4 text-amber-300 font-bold">3D Bridge Run - Distance: <span id="runner-score">0</span>m</div>
+                    <div id="three-canvas-container" class="w-full max-w-lg h-[360px] rounded-xl overflow-hidden border border-amber-500/30"></div>
+                    <div id="runner-overlay" class="absolute inset-0 bg-blue-950/80 flex flex-col items-center justify-center p-6 text-center">
+                        <h3 class="text-2xl font-bold text-amber-300 mb-2">Khalsa 3D Golden Bridge Run</h3>
+                        <button onclick="startThreeRunner()" class="bg-amber-500 text-blue-950 font-bold px-6 py-2 rounded-xl cursor-pointer">Start 3D Run</button>
+                    </div>
+                </div>
+
+                <!-- Word Catch -->
+                <div id="game-wordcatch" class="game-container hidden w-full h-[480px] relative flex flex-col items-center justify-center bg-slate-950 p-4">
+                    <div class="absolute top-4 left-4 text-amber-300 font-bold">Caught: <span id="catch-score">0</span></div>
+                    <div class="relative w-full max-w-lg h-[360px] bg-blue-950/40 border border-amber-500/30 rounded-xl overflow-hidden flex flex-col justify-between p-6">
+                        <div class="text-center py-6">
+                            <span class="text-xs text-slate-400 block mb-2">Match this Gurmukhi letter:</span>
+                            <h3 class="text-6xl font-bold text-amber-300 gurmukhi" id="falling-letter">ੳ</h3>
+                            <p id="catch-feedback" class="text-sm font-bold text-emerald-400 mt-3 h-5"></p>
+                        </div>
+                        <div id="catch-overlay" class="absolute inset-0 bg-blue-950/85 flex flex-col items-center justify-center p-6 text-center z-10">
+                            <h3 class="text-2xl font-bold text-amber-300 mb-2">Gurmukhi Letter Match</h3>
+                            <button onclick="startWordCatch()" class="bg-amber-500 text-blue-950 font-bold px-6 py-2 rounded-xl cursor-pointer">Start Game</button>
+                        </div>
+                        <div id="catch-buttons" class="grid grid-cols-3 gap-3"></div>
+                    </div>
+                </div>
+
+                <!-- Trivia -->
+                <div id="game-trivia" class="game-container hidden w-full h-[480px] relative flex flex-col items-center justify-center bg-slate-950 p-6">
+                    <div id="trivia-box" class="max-w-md w-full space-y-4">
+                        <div class="flex justify-between text-sm text-amber-300 font-bold">
+                            <span id="trivia-progress">Question 1/5</span>
+                            <span id="trivia-score-disp">Score: 0</span>
+                        </div>
+                        <h3 id="trivia-question" class="text-lg font-bold text-white text-center">Loading Question...</h3>
+                        <div id="trivia-options" class="grid grid-cols-1 gap-3"></div>
+                    </div>
+                </div>
+
+                <!-- Memory -->
+                <div id="game-memory" class="game-container hidden w-full h-[480px] relative flex flex-col items-center justify-center bg-slate-950 p-4">
+                    <div class="mb-3 text-amber-300 font-bold">Gurmukhi Pairs Found: <span id="memory-pairs">0</span>/4</div>
+                    <div id="memory-grid" class="grid grid-cols-4 gap-3 max-w-sm w-full"></div>
+                </div>
+
+                <!-- Word Scramble -->
+                <div id="game-scramble" class="game-container hidden w-full h-[480px] relative flex flex-col items-center justify-center bg-slate-950 p-6">
+                    <div class="max-w-md w-full text-center space-y-5">
+                        <p class="text-amber-300 font-bold">Unscramble the Sikhi word</p>
+                        <div id="scramble-letters" class="text-3xl sm:text-4xl tracking-widest font-extrabold text-white"></div>
+                        <p id="scramble-hint" class="text-slate-400 text-sm"></p>
+                        <input id="scramble-answer" class="w-full bg-slate-900 border border-amber-500/40 rounded-xl p-3 text-center text-white" placeholder="Type your answer" aria-label="Your answer" autocomplete="off">
+                        <button onclick="checkScramble()" class="bg-amber-500 text-blue-950 font-bold px-6 py-3 rounded-xl">Check answer</button>
+                        <p id="scramble-feedback" class="text-emerald-400 font-bold min-h-6"></p>
+                        <button onclick="nextScramble()" class="bg-blue-900 text-amber-300 px-5 py-2 rounded-xl">Next word</button>
+                    </div>
+                </div>
+
+                <!-- D-Pad -->
+                <div class="absolute bottom-3 right-3 flex items-center gap-2 bg-slate-950/90 p-2 rounded-xl border border-slate-800 z-20">
+                    <button onclick="handleControl('left')" class="w-12 h-12 bg-blue-900 hover:bg-blue-800 text-amber-300 font-bold rounded-lg text-lg cursor-pointer">◀</button>
+                    <button onclick="handleControl('action')" class="w-14 h-12 bg-amber-500 hover:bg-amber-400 text-blue-950 font-bold rounded-lg text-xs cursor-pointer">FIRE</button>
+                    <button onclick="handleControl('right')" class="w-12 h-12 bg-blue-900 hover:bg-blue-800 text-amber-300 font-bold rounded-lg text-lg cursor-pointer">▶</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: SUNDAR GUTKA -->
+        <section id="tab-gutka" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-amber-300">Sundar Gutka & Chanting Simulator</h2>
+                        <p class="text-slate-400 text-sm">Read available complete Bani entries from the digital source, with Roman transliteration and English translations where supplied. Check paath against your printed Gutka.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label class="text-xs font-bold text-amber-200">Gutka Version:</label>
+                        <select id="gutka-tradition" onchange="changeEdition(this.value)" class="bg-blue-950 border border-amber-500/40 text-amber-300 font-semibold px-3 py-1.5 rounded-xl text-sm focus:outline-none cursor-pointer" aria-label="Choose Gutka edition">
+                            <option value="sgpc">SGPC study view · BaniDB text</option>
+                            <option value="tarna">Nihang Tarna Dal study view</option>
+                            <option value="budha">Budha Dal Nitnem Gutka · reference view</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3 bg-blue-950/60 p-4 rounded-xl border border-amber-500/30">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">📿</span>
+                        <div>
+                            <h4 class="text-sm font-bold text-amber-300">Web Audio Chanting & Voice Player</h4>
+                            <p class="text-xs text-slate-400">Play background Tanpura drone or read Bani aloud.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleTanpuraDrone()" id="drone-btn" class="bg-blue-900 hover:bg-blue-800 text-amber-300 font-bold px-4 py-2 rounded-xl text-xs border border-amber-500/40 transition-all cursor-pointer">🎵 Toggle Drone</button>
+                        <button onclick="reciteCurrentBani()" class="bg-amber-500 hover:bg-amber-400 text-blue-950 font-bold px-4 py-2 rounded-xl text-xs transition-all cursor-pointer">🔊 Recite Aloud</button>
+                        <button onclick="stopRecitation()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-3 py-2 rounded-xl text-xs cursor-pointer">⏹ Stop</button>
+                    </div>
+                </div>
+
+                <div id="edition-note" class="bg-blue-950/60 border border-amber-500/20 rounded-xl p-4 text-sm text-slate-300">SGPC study view: available Gurbani entries are retrieved from BaniDB. The public feed is not an official SGPC-edition filter; verify paath against the printed SGPC Gutka.</div>
+                <div id="budha-reading-list" class="hidden bg-slate-950 border border-amber-500/20 rounded-xl p-4 space-y-3">
+                    <h3 class="font-bold text-amber-300">Budha Dal Nitnem Gutka Sahib</h3>
+                    <p class="text-sm text-slate-200">Budha Dal edition selected. This is a clearly separated reference view; the live BaniDB text below is shared Gurbani data and is <strong>not</strong> certified as the Budha Dal Gutka recension.</p>
+                    <ul class="list-disc pl-5 text-sm text-slate-200 space-y-1">
+                        <li>Budha Dal Nitnem Gutka Sahib — edition-specific contents and order to be checked against the printed Gutka</li>
+                        <li>Chandi Di Vaar — spelling corrections for the Budha Dal Gutka are noted in the Nihung Santhia app update history</li>
+                    </ul>
+                    <p class="text-xs text-slate-400">For the actual Budha Dal text, use the Budha Dal Gutka Sahib published by the relevant Panthic authority. We have not filled missing lines or invented translations.</p>
+                    <p class="text-sm"><a class="text-amber-300 underline" href="https://play.google.com/store/apps/details?id=com.santhia.nihung.nihung_santhia_gutka_sahib" target="_blank" rel="noopener">Nihung Santhia Gutka Sahib app (Google Play)</a> · <a class="text-amber-300 underline" href="https://apps.apple.com/gb/app/nihung-santhia-gutka-sahib/id1494389019" target="_blank" rel="noopener">App Store</a></p>
+                </div>
+                <div id="bani-buttons-container" class="flex flex-wrap gap-2"></div>
+                <div id="tarna-reading-list" class="hidden bg-slate-950 border border-amber-500/20 rounded-xl p-4 space-y-3">
+                    <h3 class="font-bold text-amber-300">Tarna Dal-associated additional Nitnem and Paath reading list</h3>
+                    <p class="text-xs text-slate-400">This is a catalogue guide, not a claim that every full text below has been verified or loaded into this website. The no-key BaniDB feed does not identify a Tarna Dal-specific recension. Please use the printed Panth Nitnem Gutka from the relevant Samparda for exact text and order.</p>
+                    <ul class="grid sm:grid-cols-2 gap-2 text-sm text-slate-200 list-disc pl-5">
+                      <li>Shabad Hazare (Aad)</li><li>Shabad Hazare (Dasam)</li><li>Tav-Prasad Savaiye groups</li><li>Pranvo Aad Chaupai</li><li>Kabyo Baach Chaupai</li><li>Anand Sahib</li><li>Laavan</li><li>Ramkali Ki Vaar</li><li>Chandi Di Vaar</li><li>Zafarnama</li><li>Akaal Ustat</li><li>Bachittar Natak</li>
+                    </ul>
+                    <p class="text-xs text-slate-400">Reading-list reference: <a class="text-amber-300 underline" href="https://www.sikhtranslations.com/nitnem/" target="_blank" rel="noopener">Panth Nitnem Gutka Sahib (Tarna Dal) overview</a>.</p>
+                </div>
+
+                <div class="bg-slate-950 border border-slate-800 p-6 rounded-xl max-h-[440px] overflow-y-auto space-y-6">
+                    <div class="text-center border-b border-slate-800 pb-4">
+                        <span id="gutka-tradition-badge" class="text-xs bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full border border-amber-500/30 font-bold">BaniDB Gurbani Library</span>
+                        <h3 id="bani-title" class="text-2xl font-bold text-amber-300 mt-2">Japji Sahib</h3>
+                        <p id="bani-author" class="text-sm text-slate-400">Sri Guru Nanak Dev Ji</p>
+                    </div>
+                    <div id="bani-text-body" class="space-y-6 text-base leading-relaxed text-slate-200"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GURBANI LEARNER -->
+        <section id="tab-learner" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-amber-500/30 p-6 rounded-2xl shadow-xl space-y-5">
+                <div><h2 class="text-2xl font-bold text-amber-300">Gurbani Learner</h2>
+                <p class="text-slate-300 text-sm">Learn one line at a time: read the original, practise the pronunciation, understand the meaning and reflect.</p></div>
+                <div class="flex flex-wrap gap-3 items-center">
+                    <label class="text-xs text-amber-200 font-bold" for="learner-edition">Gutka edition</label>
+                    <select id="learner-edition" onchange="changeEdition(this.value)" class="bg-blue-950 border border-amber-500/40 text-amber-200 rounded-xl px-3 py-2 text-sm"><option value="sgpc">SGPC study view · BaniDB text</option><option value="tarna">Nihang Tarna Dal study view</option><option value="budha">Budha Dal Nitnem Gutka · reference view</option></select>
+                    <select id="learner-bani-select" class="bg-blue-950 border border-amber-500/40 text-amber-200 rounded-xl px-3 py-2 text-sm" aria-label="Choose a Bani"><option>Loading Banis…</option></select>
+                    <button onclick="loadLearnerBani()" class="bg-amber-500 hover:bg-amber-400 text-blue-950 font-bold px-4 py-2 rounded-xl text-sm">Load Bani</button>
+                    <button onclick="showNextPractice()" class="bg-blue-800 hover:bg-blue-700 text-amber-200 font-bold px-4 py-2 rounded-xl text-sm">Next practice line</button>
+                </div>
+                <div id="learner-edition-note" class="text-xs text-slate-400">Choose a Bani. The same source text is shared where both traditions use it; tradition-specific differences must be checked against the relevant printed Gutka.</div>
+                <div id="learner-status" class="text-sm text-slate-400">Connecting to the Gurbani library…</div>
+                <div id="learner-card" class="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <h3 id="learner-title" class="text-xl font-bold text-amber-300">Your learning space</h3>
+                    <div><p class="text-xs uppercase tracking-wide text-amber-400 font-bold mb-1">Gurmukhi</p><p id="learner-gurmukhi" class="gurmukhi text-2xl leading-loose text-white">ਬਾਣੀ ਗੁਰੂ ਗੁਰੂ ਹੈ ਬਾਣੀ</p></div>
+                    <div><p class="text-xs uppercase tracking-wide text-amber-400 font-bold mb-1">Roman transliteration</p><p id="learner-translit" class="text-lg text-slate-200">Bani Guru Guru Hai Bani</p></div>
+                    <div><p class="text-xs uppercase tracking-wide text-amber-400 font-bold mb-1">Meaning / translation</p><p id="learner-meaning" class="text-slate-200">The Word, the Bani is Guru, and the Guru is the Bani.</p></div>
+                    <div class="border-t border-slate-800 pt-3"><p class="text-xs uppercase tracking-wide text-amber-400 font-bold mb-1">Think about it</p><p id="learner-reflection" class="text-slate-300">How can you put this teaching into practice today?</p></div>
+                    <div class="flex flex-wrap gap-2"><button onclick="speakLearnerLine()" class="bg-blue-800 text-amber-200 px-3 py-2 rounded-lg text-sm font-bold">🔊 Hear line</button><button onclick="revealPracticeMeaning()" class="bg-slate-800 text-amber-200 px-3 py-2 rounded-lg text-sm font-bold">Focus meaning</button></div>
+                </div>
+                <p class="text-xs text-slate-500">Scripture, transliteration and available translations are retrieved from BaniDB (Khalis Foundation). Translations are learning aids; consult trusted steek and teachers for deeper understanding.</p>
+            </div>
+        </section>
+
+        <!-- DAILY HUKAMNAMA -->
+        <section id="tab-hukam" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-amber-500/30 p-6 rounded-2xl shadow-xl space-y-5">
+                <div class="flex flex-wrap justify-between gap-3 items-center"><div><h2 class="text-2xl font-bold text-amber-300">Daily Hukamnama</h2><p class="text-sm text-slate-300">Sri Harmandir Sahib, Sri Darbar Sahib, Amritsar</p><p id="hukam-date" class="text-xs text-amber-200 mt-1">Loading today's reading…</p></div><button onclick="loadDailyHukam()" class="bg-amber-500 hover:bg-amber-400 text-blue-950 font-bold px-4 py-2 rounded-xl text-sm">↻ Refresh</button></div>
+                <div id="hukam-status" class="text-sm text-slate-400">Fetching the daily Hukamnama…</div>
+                <div id="hukam-content" class="space-y-4"></div>
+                <div class="bg-blue-950/60 border border-amber-500/20 rounded-xl p-4"><h3 class="font-bold text-amber-300 mb-2">What can this teach us?</h3><p id="hukam-teaching" class="text-slate-200 text-sm leading-relaxed">Read the complete Shabad and its translation above. Think about one teaching you can practise today—such as kindness, humility, remembrance or honest living—according to the words of the Shabad.</p><p class="text-xs text-slate-400 mt-2">This is a reflection prompt, not a replacement for the published Punjabi steek or a Granthi/teacher's explanation.</p></div>
+                <div class="text-xs text-slate-500">Daily reading and available translations supplied by BaniDB. <a class="text-amber-300 underline" href="https://hs.sgpc.net/" target="_blank" rel="noopener">Check SGPC's official Hukamnama portal</a>.</div>
+            </div>
+        </section>
+
+        <!-- TAB 4: MEDIA HUB -->
+        <section id="tab-media" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-amber-300">GurSikh Kids Media Hub</h2>
+                    <p class="text-slate-400 text-sm">Featured channels and creator spotlights.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-blue-950/60 border border-amber-500/30 p-5 rounded-xl flex items-center justify-between">
+                        <div>
+                            <span class="text-xs bg-red-500/20 text-red-300 px-2.5 py-0.5 rounded-full font-bold">YouTube Channel</span>
+                            <h3 class="text-lg font-bold text-white mt-1">@GurSikhKids</h3>
+                        </div>
+                        <a href="https://www.youtube.com/@GurSikhKids" target="_blank" class="bg-red-600 text-white font-bold px-4 py-2 rounded-xl text-sm">Visit YT</a>
+                    </div>
+                    <div class="bg-blue-950/60 border border-amber-500/30 p-5 rounded-xl flex items-center justify-between">
+                        <div>
+                            <span class="text-xs bg-pink-500/20 text-pink-300 px-2.5 py-0.5 rounded-full font-bold">TikTok Creator</span>
+                            <h3 class="text-lg font-bold text-white mt-1">@japrajjitsinghkhalsa</h3>
+                        </div>
+                        <a href="https://www.tiktok.com/@japrajjitsinghkhalsa" target="_blank" class="bg-pink-600 text-white font-bold px-4 py-2 rounded-xl text-sm">Visit TikTok</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: SEVA AI -->
+        <section id="tab-ai" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl flex flex-col h-[520px]">
+                <div class="border-b border-slate-800 pb-4 mb-4 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-amber-300">Seva AI Buddy</h2>
+                        <p class="text-slate-400 text-sm">Ask anything about Sikh history, Gurbani meanings, or Nitnem!</p>
+                    </div>
+                    <span class="bg-emerald-500/15 text-emerald-300 text-xs px-3 py-1 rounded-full border border-emerald-500/30 font-bold">Works without an API key</span>
+                </div>
+                <div id="ai-chat-history" class="flex-1 overflow-y-auto space-y-4 pr-2">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-amber-500 text-blue-950 font-bold flex items-center justify-center shrink-0">AI</div>
+                        <div class="bg-slate-950 border border-slate-800 p-4 rounded-2xl text-slate-200 text-sm max-w-lg">
+                            Sat Sri Akal! 🙏 I am the Seva Learning Buddy. Ask about the Five Ks, the Ten Gurus, Nitnem, or how to use the Gurbani Learner. I use prepared learning notes, not a live AI model.
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-slate-800 flex gap-2">
+                    <input type="text" id="ai-input" aria-label="Ask Seva AI a question" onkeydown="if(event.key==='Enter') sendAiMessage()" placeholder="Ask about Sikhi (e.g. What are the Five Ks?)..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500">
+                    <button onclick="sendAiMessage()" class="bg-amber-500 hover:bg-amber-400 text-blue-950 font-bold px-6 py-3 rounded-xl cursor-pointer">Send</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-blue-950/90 border-t border-amber-500/30 py-6 text-center text-xs text-slate-400 mt-12">
+        <p>© 2026 GurSikh Kids. Dedicated to Gurbani and Sikh Heritage worldwide. 🙏</p>
+        <p class="mt-2">Gurbani text, transliteration and available translations: <a class="text-amber-300 underline" href="https://www.banidb.com/" target="_blank" rel="noopener">BaniDB · Khalis Foundation</a>. Daily Hukamnama cross-check: <a class="text-amber-300 underline" href="https://hs.sgpc.net/" target="_blank" rel="noopener">SGPC</a>.</p>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        const STAR_STORAGE_KEY = 'gursikh-kids-stars-v1';
+        let stars = Number.parseInt(localStorage.getItem(STAR_STORAGE_KEY) || '150', 10);
+        if (!Number.isFinite(stars) || stars < 0) stars = 150;
+        document.getElementById('star-count').innerText = stars;
+        let currentActiveGame = 'blaster';
+
+        function updateStars(amount) {
+            stars += amount;
+            document.getElementById('star-count').innerText = stars;
+            try { localStorage.setItem(STAR_STORAGE_KEY, String(stars)); } catch (error) { console.warn('Could not save stars:', error); }
+        }
+
+        function switchTab(tabId) {
+            ['home', 'games', 'gutka', 'learner', 'hukam', 'media', 'ai'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const nav = document.getElementById(`nav-${t}`);
+                if(nav) nav.className = "nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all text-amber-200 hover:bg-blue-900/60 cursor-pointer";
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if(activeNav) activeNav.className = "nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition-all bg-amber-500 text-blue-950 shadow-md cursor-pointer";
+        }
+
+        function launchGame(gameKey) {
+            currentActiveGame = gameKey;
+            ['blaster', 'runner3d', 'wordcatch', 'trivia', 'memory', 'scramble'].forEach(g => {
+                document.getElementById(`game-${g}`).classList.add('hidden');
+                const btn = document.getElementById(`gbtn-${g}`);
+                if(btn) btn.className = "gbtn bg-slate-800 text-amber-300 hover:bg-slate-700 font-bold px-4 py-2 rounded-xl text-sm cursor-pointer";
+            });
+            document.getElementById(`game-${gameKey}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`gbtn-${gameKey}`);
+            if(activeBtn) activeBtn.className = "gbtn bg-amber-500 text-blue-950 font-bold px-4 py-2 rounded-xl text-sm cursor-pointer";
+
+            if(gameKey === 'trivia') initTrivia();
+            if(gameKey === 'memory') initMemory();
+            if(gameKey === 'scramble') nextScramble();
+        }
+
+        // Blaster Game
+        let blasterInterval = null, shipX = 180, bullets = [];
+        function fireBlaster() { bullets.push({x: shipX + 18, y: 310}); }
+        function startBlasterGame() {
+            document.getElementById('blaster-overlay').style.display = 'none';
+            const canvas = document.getElementById('blasterCanvas');
+            const ctx = canvas.getContext('2d');
+            let score = 0, enemies = [];
+            bullets = [];
+            shipX = 180;
+            if(blasterInterval) clearInterval(blasterInterval);
+            blasterInterval = setInterval(() => {
+                ctx.clearRect(0, 0, 400, 360);
+                ctx.fillStyle = '#f59e0b';
+                ctx.beginPath();
+                ctx.moveTo(shipX + 20, 310); ctx.lineTo(shipX + 40, 340); ctx.lineTo(shipX, 340); ctx.closePath();
+                ctx.fill();
+                ctx.fillStyle = '#38bdf8';
+                for (let i = bullets.length - 1; i >= 0; i--) {
+                    bullets[i].y -= 8;
+                    ctx.fillRect(bullets[i].x, bullets[i].y, 4, 12);
+                    if(bullets[i].y < 0) bullets.splice(i, 1);
+                }
+                if(Math.random() < 0.03) enemies.push({x: Math.random() * 360, y: 0, w: 30, h: 20});
+                ctx.fillStyle = '#ef4444';
+                for (let i = enemies.length - 1; i >= 0; i--) {
+                    let e = enemies[i];
+                    e.y += 2.2;
+                    ctx.fillRect(e.x, e.y, e.w, e.h);
+                    if(e.y > 360) { enemies.splice(i, 1); continue; }
+                    for (let bi = bullets.length - 1; bi >= 0; bi--) {
+                        let b = bullets[bi];
+                        if(b.x > e.x && b.x < e.x + e.w && b.y > e.y && b.y < e.y + e.h) {
+                            enemies.splice(i, 1); bullets.splice(bi, 1);
+                            score += 10; document.getElementById('blaster-score').innerText = score;
+                            updateStars(5); break;
+                        }
+                    }
+                }
+            }, 30);
+        }
+
+        // 3D Runner
+        let runnerPlayerX = 0, runnerAnimId = null, runnerResizeHandler = null;
+        function startThreeRunner() {
+            document.getElementById('runner-overlay').style.display = 'none';
+            const container = document.getElementById('three-canvas-container');
+            container.innerHTML = '';
+            if(runnerAnimId) cancelAnimationFrame(runnerAnimId);
+            if(runnerResizeHandler) window.removeEventListener('resize', runnerResizeHandler);
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0f172a);
+            const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({antialias: true});
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+            runnerResizeHandler = () => {
+                if (!container.isConnected) return;
+                camera.aspect = container.clientWidth / Math.max(container.clientHeight, 1);
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            };
+            window.addEventListener('resize', runnerResizeHandler);
+            scene.add(new THREE.DirectionalLight(0xffffff, 1.2));
+            scene.add(new THREE.AmbientLight(0x606060));
+            const bridge = new THREE.Mesh(new THREE.BoxGeometry(6, 0.2, 400), new THREE.MeshStandardMaterial({color: 0xd97706}));
+            bridge.position.z = -180; scene.add(bridge);
+            const player = new THREE.Mesh(new THREE.ConeGeometry(0.6, 1.5, 4), new THREE.MeshStandardMaterial({color: 0x38bdf8}));
+            player.rotation.x = -Math.PI / 2; player.position.y = 0.8;
+            runnerPlayerX = 0; scene.add(player);
+            camera.position.set(0, 4, 5); camera.lookAt(0, 0, -5);
+            let runScore = 0;
+            function animate() {
+                runnerAnimId = requestAnimationFrame(animate);
+                player.position.z -= 0.25;
+                player.position.x += (runnerPlayerX - player.position.x) * 0.15;
+                camera.position.z = player.position.z + 5;
+                runScore++;
+                if(runScore % 10 === 0) document.getElementById('runner-score').innerText = Math.floor(runScore / 10);
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        // Controls
+        function handleControl(action) {
+            if (currentActiveGame === 'blaster') {
+                if(action === 'left') shipX = Math.max(0, shipX - 25);
+                if(action === 'right') shipX = Math.min(360, shipX + 25);
+                if(action === 'action') fireBlaster();
+            } else if (currentActiveGame === 'runner3d') {
+                if(action === 'left') runnerPlayerX = Math.max(-2.2, runnerPlayerX - 1.1);
+                if(action === 'right') runnerPlayerX = Math.min(2.2, runnerPlayerX + 1.1);
+            }
+        }
+        document.addEventListener('keydown', (e) => {
+            const target = e.target;
+            if (target && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))) return;
+            if (['ArrowLeft', 'ArrowRight', ' '].includes(e.key) && ['games'].some(tab => !document.getElementById(`tab-${tab}`).classList.contains('hidden'))) {
+                e.preventDefault();
+            }
+            if(e.key === 'ArrowLeft') handleControl('left');
+            if(e.key === 'ArrowRight') handleControl('right');
+            if(e.key === ' ') handleControl('action');
+        });
+
+        // Word Catch
+        const gurmukhiList = [
+            {char: 'ੳ', sound: 'U (Oora)'}, {char: 'ਅ', sound: 'A (Aira)'},
+            {char: 'ੲ', sound: 'I (Iri)'}, {char: 'ਸ', sound: 'S (Sassa)'}
+        ];
+        let currentGurmukhiObj = gurmukhiList[0];
+        function startWordCatch() {
+            document.getElementById('catch-overlay').style.display = 'none';
+            nextGurmukhiRound();
+        }
+        function nextGurmukhiRound() {
+            currentGurmukhiObj = gurmukhiList[Math.floor(Math.random() * gurmukhiList.length)];
+            document.getElementById('falling-letter').innerText = currentGurmukhiObj.char;
+            document.getElementById('catch-feedback').innerText = '';
+            let choices = [currentGurmukhiObj.sound];
+            while(choices.length < 3) {
+                let s = gurmukhiList[Math.floor(Math.random() * gurmukhiList.length)].sound;
+                if(!choices.includes(s)) choices.push(s);
+            }
+            choices.sort(() => Math.random() - 0.5);
+            const btnContainer = document.getElementById('catch-buttons');
+            btnContainer.innerHTML = '';
+            choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = "bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold py-3 px-2 rounded-lg border border-amber-500/30 text-xs cursor-pointer";
+                btn.innerText = choice;
+                btn.onclick = () => checkCatch(choice);
+                btnContainer.appendChild(btn);
+            });
+        }
+        function checkCatch(selectedSound) {
+            const feedback = document.getElementById('catch-feedback');
+            if(selectedSound === currentGurmukhiObj.sound) {
+                document.getElementById('catch-score').innerText = parseInt(document.getElementById('catch-score').innerText) + 10;
+                updateStars(5);
+                feedback.innerText = "Correct! Shabash! ⭐";
+                setTimeout(nextGurmukhiRound, 600);
+            } else { feedback.innerText = "Try again!"; }
+        }
+
+        // Trivia
+        const triviaQuestions = [
+            {q: "How many Sikh Gurus are there?", options: ["10 Gurus", "5 Gurus", "12 Gurus"], correct: 0},
+            {q: "Who is the eternal living Guru of the Sikhs?", options: ["Dasam Granth", "Sri Guru Granth Sahib Ji", "Suraj Prakash"], correct: 1},
+            {q: "Which Bani is composed of 38 Pauris?", options: ["Japji Sahib", "Jaap Sahib", "Anand Sahib"], correct: 0},
+            {q: "What does 'Seva' mean?", options: ["Selfless service", "A musical instrument", "A festival meal"], correct: 0},
+            {q: "What is the Sikh place of worship called?", options: ["Gurdwara", "Mandir", "Monastery"], correct: 0},
+            {q: "What does 'Langar' refer to?", options: ["Community kitchen and meal", "A type of turban", "A prayer book"], correct: 0},
+            {q: "Who founded the Khalsa in 1699?", options: ["Guru Gobind Singh Ji", "Guru Nanak Dev Ji", "Guru Arjan Dev Ji"], correct: 0},
+            {q: "What is the Sikh greeting?", options: ["Sat Sri Akal", "Namaste", "Salaam"], correct: 0},
+            {q: "How many articles of faith are traditionally known as the Five Ks?", options: ["Five", "Three", "Seven"], correct: 0},
+            {q: "Which city is home to Sri Harmandir Sahib?", options: ["Amritsar", "Anandpur Sahib", "Patna"], correct: 0}
+        ];
+        let currentTriviaIdx = 0, triviaScore = 0;
+        function initTrivia() {
+            currentTriviaIdx = 0;
+            triviaScore = 0;
+            const box = document.getElementById('trivia-box');
+            box.innerHTML = `
+                <div class="flex justify-between text-sm text-amber-300 font-bold">
+                    <span id="trivia-progress">Question 1/${triviaQuestions.length}</span>
+                    <span id="trivia-score-disp">Score: 0</span>
+                </div>
+                <h3 id="trivia-question" class="text-lg font-bold text-white text-center">Loading Question...</h3>
+                <div id="trivia-options" class="grid grid-cols-1 gap-3"></div>`;
+            loadTriviaQuestion();
+        }
+        function loadTriviaQuestion() {
+            const box = document.getElementById('trivia-box');
+            if(currentTriviaIdx >= triviaQuestions.length) {
+                box.innerHTML = `
+                    <div class="text-center space-y-4">
+                        <h3 class="text-2xl font-bold text-amber-300">Trivia Complete!</h3>
+                        <p class="text-slate-200">Score: ${triviaScore}/${triviaQuestions.length}</p>
+                        <button onclick="initTrivia()" class="bg-amber-500 text-blue-950 font-bold px-6 py-2 rounded-xl cursor-pointer">Play Again</button>
+                    </div>`;
+                updateStars(20);
+                return;
+            }
+            const qObj = triviaQuestions[currentTriviaIdx];
+            document.getElementById('trivia-progress').innerText = `Question ${currentTriviaIdx + 1}/${triviaQuestions.length}`;
+            document.getElementById('trivia-question').innerText = qObj.q;
+            document.getElementById('trivia-score-disp').innerText = `Score: ${triviaScore}`;
+            const optDiv = document.getElementById('trivia-options');
+            optDiv.innerHTML = '';
+            qObj.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold p-3 rounded-xl border border-amber-500/30 text-left cursor-pointer";
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    if(idx === qObj.correct) triviaScore++;
+                    currentTriviaIdx++;
+                    loadTriviaQuestion();
+                };
+                optDiv.appendChild(btn);
+            });
+        }
+
+        // Memory Match
+        function initMemory() {
+            const grid = document.getElementById('memory-grid');
+            grid.innerHTML = '';
+            document.getElementById('memory-pairs').innerText = '0';
+            let flipped = [], matched = 0;
+            ['ੴ', 'ੴ', 'ਖੰਡਾ', 'ਖੰਡਾ', 'ੳ', 'ੳ', 'ਅ', 'ਅ'].sort(() => Math.random() - 0.5).forEach((sym) => {
+                const card = document.createElement('div');
+                card.className = "h-16 bg-blue-900 border border-amber-500/30 rounded-xl flex items-center justify-center text-xl font-bold text-amber-300 cursor-pointer gurmukhi";
+                card.innerText = '📿'; card.dataset.sym = sym; card.dataset.matched = "false";
+                card.onclick = () => {
+                    if(card.dataset.matched === "true" || flipped.includes(card) || flipped.length >= 2) return;
+                    card.innerText = sym; card.classList.add('bg-amber-500', 'text-blue-950');
+                    flipped.push(card);
+                    if(flipped.length === 2) {
+                        const [c1, c2] = flipped;
+                        if(c1.dataset.sym === c2.dataset.sym) {
+                            c1.dataset.matched = "true"; c2.dataset.matched = "true";
+                            matched++; document.getElementById('memory-pairs').innerText = matched;
+                            updateStars(10); flipped = [];
+                        } else {
+                            setTimeout(() => {
+                                c1.innerText = '📿'; c2.innerText = '📿';
+                                c1.classList.remove('bg-amber-500', 'text-blue-950');
+                                c2.classList.remove('bg-amber-500', 'text-blue-950');
+                                flipped = [];
+                            }, 700);
+                        }
+                    }
+                };
+                grid.appendChild(card);
+            });
+        }
+
+        // Sikhi Word Scramble
+        const scrambleWords = [
+            { word: 'SEVA', hint: 'Selfless service' },
+            { word: 'LANGAR', hint: 'The community kitchen' },
+            { word: 'KHALSA', hint: 'The community initiated in 1699' },
+            { word: 'GURBANI', hint: "The Guru's revealed teachings" },
+            { word: 'SIMRAN', hint: 'Remembrance/meditation on the Divine' },
+            { word: 'GURDWARA', hint: 'A Sikh place of worship' }
+        ];
+        let activeScramble = null;
+        function nextScramble() {
+            const pool = scrambleWords.filter(item => item !== activeScramble);
+            activeScramble = pool[Math.floor(Math.random() * pool.length)];
+            const letters = activeScramble.word.split('');
+            for (let i = letters.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [letters[i], letters[j]] = [letters[j], letters[i]];
+            }
+            if (letters.join('') === activeScramble.word) letters.reverse();
+            document.getElementById('scramble-letters').textContent = letters.join('  ');
+            document.getElementById('scramble-hint').textContent = `Hint: ${activeScramble.hint}`;
+            document.getElementById('scramble-answer').value = '';
+            document.getElementById('scramble-feedback').textContent = '';
+        }
+        function checkScramble() {
+            const answer = document.getElementById('scramble-answer').value.trim().toUpperCase().replace(/\s+/g, '');
+            const feedback = document.getElementById('scramble-feedback');
+            if (!answer) { feedback.textContent = 'Type an answer first.'; return; }
+            if (answer === activeScramble.word) {
+                feedback.textContent = 'Correct! Waheguru Ji! +10 stars';
+                updateStars(10);
+            } else {
+                feedback.textContent = 'Not quite — try again!';
+            }
+        }
+
+        // Audio & Chanting
+        let audioCtx = null, droneOsc1 = null, droneOsc2 = null, droneGain = null, isDronePlaying = false;
+        function toggleTanpuraDrone() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const btn = document.getElementById('drone-btn');
+            if (isDronePlaying) {
+                if (droneGain) droneGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
+                setTimeout(() => {
+                    if (droneOsc1) try{droneOsc1.stop();droneOsc1.disconnect();}catch(e){}
+                    if (droneOsc2) try{droneOsc2.stop();droneOsc2.disconnect();}catch(e){}
+                }, 200);
+                isDronePlaying = false;
+                btn.className = "bg-blue-900 hover:bg-blue-800 text-amber-300 font-bold px-4 py-2 rounded-xl text-xs border border-amber-500/40 cursor-pointer";
+                btn.innerText = "🎵 Toggle Drone";
+            } else {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                droneOsc1 = audioCtx.createOscillator(); droneOsc2 = audioCtx.createOscillator(); droneGain = audioCtx.createGain();
+                droneOsc1.type = 'sine'; droneOsc1.frequency.setValueAtTime(130.81, audioCtx.currentTime);
+                droneOsc2.type = 'triangle'; droneOsc2.frequency.setValueAtTime(196.00, audioCtx.currentTime);
+                droneGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+                droneGain.gain.exponentialRampToValueAtTime(0.15, audioCtx.currentTime + 1);
+                droneOsc1.connect(droneGain); droneOsc2.connect(droneGain); droneGain.connect(audioCtx.destination);
+                droneOsc1.start(); droneOsc2.start();
+                isDronePlaying = true;
+                btn.className = "bg-amber-500 text-blue-950 font-bold px-4 py-2 rounded-xl text-xs shadow-lg shadow-amber-500/30 cursor-pointer";
+                btn.innerText = "⏹ Stop Drone";
+            }
+        }
+        function reciteCurrentBani() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const title = document.getElementById('bani-title').innerText;
+                const bodyText = document.getElementById('bani-text-body').innerText;
+                const utterance = new SpeechSynthesisUtterance(`${title}. ${bodyText}`);
+                utterance.rate = 0.88; window.speechSynthesis.speak(utterance);
+            }
+        }
+        function stopRecitation() { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); }
+
+        // Live Gurbani library: public BaniDB API, no API key or server required.
+        const BANIDB = 'https://api.banidb.com/v2';
+        let baniCatalog = {};
+        let selectedBani = null;
+        let learnerVerses = [];
+        let learnerIndex = 0;
+        let practiceMeaningVisible = false;
+        let selectedEdition = 'sgpc';
+        const TARNA_READING_LIST = ['Shabad Hazare (Aad)','Shabad Hazare (Dasam)','Tav-Prasad Savaiye groups','Pranvo Aad Chaupai','Kabyo Baach Chaupai','Anand Sahib','Laavan','Ramkali Ki Vaar','Chandi Di Vaar','Zafarnama','Akaal Ustat','Bachittar Natak'];
+        const safeText = (value) => typeof value === 'string' ? value : (typeof value?.unicode === 'string' ? value.unicode : '');
+        const apiGet = async (path) => {
+            // Public BaniDB read endpoint. No API key is required.
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 15000);
+            try {
+                const response = await fetch(`${BANIDB}${path}`, {
+                    method: 'GET', mode: 'cors', cache: 'no-store',
+                    headers: { 'Accept': 'application/json' }, signal: controller.signal
+                });
+                if (!response.ok) throw new Error(`BaniDB returned HTTP ${response.status} for ${path}`);
+                return await response.json();
+            } catch (error) {
+                if (error.name === 'AbortError') throw new Error('BaniDB request timed out after 15 seconds');
+                if (error instanceof TypeError) throw new Error('Browser could not reach BaniDB. This can happen when the HTML is opened as a local file (file://), the network blocks the API, or the API has a temporary outage.');
+                throw error;
+            } finally { clearTimeout(timeout); }
+        };
+        const getVerses = data => Array.isArray(data?.verses) ? data.verses : (Array.isArray(data?.bani?.verses) ? data.bani.verses : (Array.isArray(data?.hukam) ? data.hukam.flatMap(x => x?.verses || []) : []));
+        // BaniDB v2 verse objects are sometimes wrapped as item.verse.verse.
+        // Read the nested structure first, while retaining compatibility with flatter responses.
+        const verseLayers = v => [v?.verse?.verse, v?.verse, v].filter(Boolean);
+        const verseGurmukhi = v => {
+            for (const x of verseLayers(v)) {
+                const value = x?.gurmukhi ?? x?.unicode ?? x?.verse;
+                const text = safeText(value);
+                if (text) return text;
+            }
+            return '';
+        };
+        const verseTranslit = v => {
+            for (const x of verseLayers(v)) {
+                const t = x?.transliteration || x?.translit || {};
+                const value = t?.english || t?.en || t?.unicode || x?.transliteration_english || x?.translit_english;
+                if (safeText(value)) return safeText(value);
+            }
+            return '';
+        };
+        const verseEnglish = v => {
+            for (const x of verseLayers(v)) {
+                const e = x?.steek?.en || x?.translations?.en || x?.translation?.en || {};
+                const value = e?.bdb || e?.ms || e?.ssk || e?.snk || e?.unicode || (typeof e === 'string' ? e : '') || x?.english;
+                if (safeText(value)) return safeText(value);
+            }
+            return '';
+        };
+        const versePunjabi = v => {
+            for (const x of verseLayers(v)) {
+                const p = x?.steek?.pu || x?.translations?.pu || x?.translation?.pu || {};
+                const value = p?.ss?.unicode || p?.ms?.unicode || p?.bdb?.unicode || p?.unicode || (typeof p === 'string' ? p : '');
+                if (safeText(value)) return safeText(value);
+            }
+            return '';
+        };
+
+        async function initGurbaniLibrary() {
+            try {
+                const data = await apiGet('/banis');
+                const rawCatalog = data?.banis || data?.data || data || {};
+                baniCatalog = Array.isArray(rawCatalog)
+                    ? Object.fromEntries(rawCatalog.map((item, index) => [String(item.id ?? item.baniId ?? item.bani_id ?? item.token ?? index), item]))
+                    : rawCatalog;
+                const entries = Object.entries(baniCatalog);
+                const select = document.getElementById('learner-bani-select');
+                select.innerHTML = '';
+                entries.forEach(([id, item]) => {
+                    const option = document.createElement('option'); option.value = id;
+                    option.textContent = item.gurmukhiUni || item.gurmukhi || item.info?.unicode || item.info?.english || item.transliterations?.english || `Bani ${id}`;
+                    select.appendChild(option);
+                });
+                document.getElementById('learner-status').textContent = `${entries.length} Banis available from the online Gurbani library.`;
+                changeSamprdai();
+                if (entries.length) await loadLearnerBani();
+            } catch (error) {
+                const localFile = location.protocol === 'file:';
+                const msg = `${error.message || 'Could not connect to BaniDB.'}${localFile ? ' You opened this page as a local file (file://). Upload it to a web host such as GitHub Pages or Netlify, then open its https:// address; browsers can block API requests from local files.' : ' Check your internet connection or try again later.'} No API key is required.`;
+                document.getElementById('learner-status').textContent = msg;
+                document.getElementById('bani-text-body').textContent = msg;
+                console.error(error);
+            }
+        }
+
+        async function fetchBani(id) {
+            const data = await apiGet(`/banis/${encodeURIComponent(id)}`);
+            return data?.bani || data;
+        }
+
+        function changeEdition(value) {
+            selectedEdition = ['tarna', 'budha'].includes(value) ? value : 'sgpc';
+            const gutka = document.getElementById('gutka-tradition');
+            const learner = document.getElementById('learner-edition');
+            if (gutka) gutka.value = selectedEdition;
+            if (learner) learner.value = selectedEdition;
+            const isTarna = selectedEdition === 'tarna';
+            const isBudha = selectedEdition === 'budha';
+            const note = document.getElementById('edition-note');
+            const learnerNote = document.getElementById('learner-edition-note');
+            const extra = document.getElementById('tarna-reading-list');
+            if (note) note.textContent = isTarna
+              ? 'Nihang Tarna Dal study view: shared Bani entries below come from BaniDB and are not labelled as a Tarna Dal recension. The additional reading list is shown separately; full Tarna Dal-specific text must be verified from the printed Panth Nitnem Gutka.'
+              : 'SGPC study view: available Bani entries are retrieved from BaniDB. The public feed is not an official SGPC-edition filter; check exact paath against the printed SGPC Gutka.';
+            if (learnerNote) learnerNote.textContent = isTarna
+              ? 'Tarna Dal study view selected. Shared lines are shown from BaniDB; do not assume they encode every Tarna Dal-specific spelling, order or inclusion.'
+              : 'SGPC study view selected. Shared Bani text and available English translations are shown from BaniDB.';
+            if (extra) extra.classList.toggle('hidden', !isTarna);
+            const badge = document.getElementById('gutka-tradition-badge');
+            if (badge) badge.textContent = isTarna ? 'Nihang Tarna Dal · study view' : 'SGPC · study view';
+        }
+
+        function changeSamprdai() {
+            const select = document.getElementById('learner-bani-select');
+            const chosen = select?.value || Object.keys(baniCatalog)[0];
+            const container = document.getElementById('bani-buttons-container');
+            if (!container) return;
+            container.innerHTML = '';
+            Object.entries(baniCatalog).forEach(([id, item]) => {
+                const btn = document.createElement('button');
+                btn.className = 'bani-btn bg-slate-800 text-amber-300 hover:bg-slate-700 font-bold px-3 py-1.5 rounded-xl text-xs';
+                btn.textContent = item.gurmukhiUni || item.gurmukhi || item.info?.unicode || item.info?.english || item.transliterations?.english || `Bani ${id}`;
+                btn.onclick = () => loadBaniById(id);
+                container.appendChild(btn);
+            });
+            if (chosen && baniCatalog[chosen]) loadBaniById(chosen);
+        }
+
+        async function loadBaniById(id) {
+            const body = document.getElementById('bani-text-body');
+            body.textContent = 'Loading complete Bani from BaniDB…';
+            try {
+                const data = await fetchBani(id);
+                selectedBani = data;
+                const info = data.info || {};
+                const verses = getVerses(data);
+                document.getElementById('bani-title').textContent = info.unicode || info.english || baniCatalog[id]?.gurmukhiUni || 'Selected Bani';
+                document.getElementById('bani-author').textContent = `${data.source?.unicode || data.source?.english || 'BaniDB Gurbani Library'}${data.source?.pageNo ? ` · Ang ${data.source.pageNo}` : ''}`;
+                body.innerHTML = '';
+                if (!verses.length) { body.textContent = 'BaniDB did not return verse lines for this entry. Please choose another entry or refresh. The site will not fill missing Gurbani with invented text.'; return; }
+                verses.forEach((v, i) => {
+                    const card = document.createElement('div'); card.className = 'p-4 bg-slate-900/60 rounded-xl border border-slate-800 space-y-2';
+                    const original = document.createElement('p'); original.className = 'gurmukhi text-xl leading-loose text-amber-100'; original.textContent = verseGurmukhi(v) || 'Gurmukhi text was not supplied for this line by the source.';
+                    const translit = document.createElement('p'); translit.className = 'text-sm text-slate-300'; translit.textContent = verseTranslit(v);
+                    const meaning = document.createElement('p'); meaning.className = 'text-sm text-slate-200'; meaning.textContent = verseEnglish(v) || 'English translation is not available for this line in the selected source.';
+                    const label = document.createElement('span'); label.className = 'text-xs text-amber-400'; label.textContent = `Verse ${i+1}`;
+                    card.append(label, original); if (translit.textContent) card.appendChild(translit); card.appendChild(meaning); body.appendChild(card);
+                });
+                document.querySelectorAll('.bani-btn').forEach(b => b.classList.remove('ring-2','ring-amber-400'));
+                const btn = [...document.querySelectorAll('.bani-btn')].find(b => b.textContent === (baniCatalog[id]?.gurmukhiUni || baniCatalog[id]?.gurmukhi || baniCatalog[id]?.info?.unicode || baniCatalog[id]?.info?.english || baniCatalog[id]?.transliterations?.english));
+                if (btn) btn.classList.add('ring-2','ring-amber-400');
+            } catch (error) { body.textContent = 'Unable to load this Bani right now. Please try again.'; console.error(error); }
+        }
+
+        async function loadLearnerBani() {
+            const id = document.getElementById('learner-bani-select').value;
+            if (!id) return;
+            document.getElementById('learner-status').textContent = 'Loading selected Bani…';
+            try {
+                const data = await fetchBani(id);
+                learnerVerses = getVerses(data); learnerIndex = 0;
+                document.getElementById('learner-title').textContent = data.info?.unicode || baniCatalog[id]?.gurmukhiUni || 'Gurbani practice';
+                document.getElementById('learner-status').textContent = `${learnerVerses.length} lines loaded. Move through them at your own pace.`;
+                renderLearnerVerse();
+            } catch (error) { document.getElementById('learner-status').textContent = 'Could not load this Bani. Please try again.'; console.error(error); }
+        }
+
+        function renderLearnerVerse() {
+            const v = learnerVerses[learnerIndex]; if (!v) return;
+            document.getElementById('learner-gurmukhi').textContent = verseGurmukhi(v) || 'Gurmukhi text was not supplied for this line by the source.';
+            document.getElementById('learner-translit').textContent = verseTranslit(v) || 'Transliteration is not available for this line.';
+            document.getElementById('learner-meaning').textContent = verseEnglish(v) || 'English translation is not available for this line in the selected source.';
+            document.getElementById('learner-reflection').textContent = 'Read the line slowly. What value or action does its meaning invite you to practise today?';
+            practiceMeaningVisible = false;
+        }
+        function showNextPractice() { if (!learnerVerses.length) return; learnerIndex = (learnerIndex + 1) % learnerVerses.length; renderLearnerVerse(); }
+        function revealPracticeMeaning() { const el = document.getElementById('learner-meaning'); el.classList.toggle('blur-sm'); }
+        function speakLearnerLine() { const text = `${document.getElementById('learner-gurmukhi').textContent}. ${document.getElementById('learner-translit').textContent}`; if ('speechSynthesis' in window) { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = .78; speechSynthesis.speak(u); } }
+
+        async function loadDailyHukam() {
+            const status = document.getElementById('hukam-status'), content = document.getElementById('hukam-content');
+            status.textContent = 'Fetching the daily Hukamnama from BaniDB…'; content.innerHTML = '';
+            try {
+                let data;
+                try {
+                    data = await apiGet('/hukamnamas/today');
+                } catch (todayError) {
+                    // Documented BaniDB route: /hukamnamas/{year}/{month}/{day}.
+                    // Use Amritsar's local calendar date, not the visitor's timezone.
+                    const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+                    const part = key => parts.find(x => x.type === key)?.value;
+                    data = await apiGet(`/hukamnamas/${part('year')}/${Number(part('month'))}/${Number(part('day'))}`);
+                }
+                const shabads = Array.isArray(data?.hukam) ? data.hukam : (data?.verses ? [data] : []);
+                const verses = shabads.flatMap(x => getVerses(x));
+                const info = shabads[0] || {};
+                const amritsarDate = new Intl.DateTimeFormat('en-GB',{dateStyle:'full',timeZone:'Asia/Kolkata'}).format(new Date());
+                document.getElementById('hukam-date').textContent = `${data.date || data.hukam_date || amritsarDate} · ${info.ang ? `Ang ${info.ang}` : 'Sri Darbar Sahib, Amritsar'}`;
+                if (!verses.length) throw new Error("No verses in today's response");
+                shabads.forEach((shabad, si) => {
+                    const heading = document.createElement('p'); heading.className = 'text-amber-300 font-bold'; heading.textContent = `${shabad.source_uni || 'Hukamnama'}${shabad.writer ? ` · ${shabad.writer}` : ''}${shabad.ang ? ` · Ang ${shabad.ang}` : ''}`; content.appendChild(heading);
+                    (shabad.verses || []).forEach(v => {
+                        const card = document.createElement('div'); card.className = 'bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2';
+                        const g = document.createElement('p'); g.className = 'gurmukhi text-xl leading-loose text-amber-100'; g.textContent = verseGurmukhi(v) || 'Gurmukhi text was not supplied for this line by the source.';
+                        const t = document.createElement('p'); t.className = 'text-sm text-slate-300'; t.textContent = verseTranslit(v);
+                        const e = document.createElement('p'); e.className = 'text-sm text-slate-100 leading-relaxed'; e.textContent = verseEnglish(v) || 'English translation is not available for this line.';
+                        const pu = document.createElement('p'); pu.className = 'gurmukhi text-sm text-slate-300 leading-relaxed'; pu.textContent = versePunjabi(v);
+                        card.append(g); if(t.textContent) card.append(t); card.append(e); if(pu.textContent) card.append(pu); content.appendChild(card);
+                    });
+                });
+                status.textContent = `Today's Hukamnama loaded · ${verses.length} Gurbani lines. Transliteration and translations are shown where supplied by BaniDB.`;
+                document.getElementById('hukam-teaching').textContent = 'Use the translation and Punjabi explanation above to understand the Shabad in context. Ask yourself: what does this reading encourage me to change in my thoughts, words or actions today? Choose one small action and put it into practice.';
+            } catch (error) {
+                const localFile = location.protocol === 'file:';
+                status.textContent = `${error.message || 'The live Hukamnama feed could not be reached.'} ${localFile ? 'Open this page from an https:// website rather than directly from your computer.' : 'Please refresh or use the official SGPC portal below.'} No Hukamnama has been invented or substituted.`;
+                console.error('Daily Hukamnama error:', error);
+            }
+        }
+
+        // Built-in, curated learning helper. It is deliberately not presented as generative AI.
+        function sendAiMessage() {
+            const input = document.getElementById('ai-input'); const q = input.value.trim(); if (!q) return;
+            const history = document.getElementById('ai-chat-history');
+            const row = document.createElement('div'); row.className = 'flex items-start justify-end gap-3';
+            const user = document.createElement('div'); user.className = 'bg-blue-900 p-4 rounded-2xl text-slate-100 text-sm max-w-lg'; user.textContent = q; row.appendChild(user); history.appendChild(row);
+            const lower = q.toLowerCase(); let answer = 'I am a simple learning guide, so I may not know that yet. Try asking about the Five Ks, the Ten Gurus, Nitnem, the meaning of Waheguru, or use Gurbani Learner to read a complete Bani with its available translation.';
+            if (lower.includes('five k') || lower.includes('5 k')) answer = 'The Five Ks are Kesh (uncut hair), Kangha (comb), Kara (steel bracelet), Kachhera (special shorts) and Kirpan (a Sikh article of faith). They remind initiated Sikhs of their commitment to the Guru and the Sikh way of life.';
+            else if (lower.includes('ten guru') || lower.includes('10 guru')) answer = 'Sikhs honour the Ten human Gurus, from Guru Nanak Dev Ji to Guru Gobind Singh Ji. Guru Gobind Singh Ji established the Khalsa in 1699 and bestowed Guruship on Sri Guru Granth Sahib Ji.';
+            else if (lower.includes('nitnem') || lower.includes('daily prayer')) answer = 'Nitnem means a daily discipline of reading or reciting prescribed Banis. Common daily prayers include Japji Sahib, Jaap Sahib and Tav-Prasad Savaiye in the morning, Rehras Sahib in the evening, and Kirtan Sohila at night. Practices can vary by tradition.';
+            else if (lower.includes('waheguru') || lower.includes('meaning of waheguru')) answer = 'Waheguru is an expression of wonder and praise for the Wondrous Enlightener—the One who brings us from spiritual darkness to light.';
+            else if (lower.includes('gurbani learner') || lower.includes('learn bani')) answer = 'Open the Gurbani Learner tab, choose a Bani from the list, then read the Gurmukhi line, its Roman transliteration and the available translation. Use Hear Line to practise pronunciation and Next Practice Line to continue.';
+            else if (lower.includes('hukam')) answer = 'Open Daily Hukam to read the current Hukamnama from Sri Darbar Sahib. Read the complete Shabad and translation, then reflect on one action you can practise today.';
+            const replyRow = document.createElement('div'); replyRow.className = 'flex items-start gap-3'; const avatar = document.createElement('div'); avatar.className = 'w-8 h-8 rounded-full bg-amber-500 text-blue-950 font-bold flex items-center justify-center shrink-0'; avatar.textContent = 'S'; const bubble = document.createElement('div'); bubble.className = 'bg-slate-950 border border-slate-800 p-4 rounded-2xl text-slate-200 text-sm max-w-lg'; bubble.textContent = answer; replyRow.append(avatar,bubble); history.appendChild(replyRow); history.scrollTop = history.scrollHeight; input.value = '';
+        }
+
+        changeEdition('sgpc');
+        changeSamprdai();
+        initGurbaniLibrary();
+        loadDailyHukam();
+
+
+    </script>
+</body>
+</html>
